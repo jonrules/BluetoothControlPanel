@@ -28,6 +28,8 @@ public class MainActivity extends ActionBarActivity
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
+    private Fragment[] mFragments;
+
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
@@ -52,15 +54,21 @@ public class MainActivity extends ActionBarActivity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (position == 0) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, PotsFragment.newInstance("First", "Second"))
-                    .commit();
-        } else {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                    .commit();
+        Fragment[] fragments = getFragments();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, mFragments[position])
+                .commit();
+    }
+
+    public Fragment[] getFragments() {
+        if (mFragments == null) {
+            mFragments = new Fragment[]{
+                PotsFragment.newInstance("first", "second"),
+                PlaceholderFragment.newInstance(1),
+                PlaceholderFragment.newInstance(2)
+            };
         }
+        return mFragments;
     }
 
     public void onSectionAttached(int number) {
